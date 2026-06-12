@@ -1,6 +1,7 @@
 import { load } from "dotenv";
 await load({ export: true });
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { eq, or } from "drizzle-orm";
 import response from "./src/utils/response.ts";
 import { db } from "./src/db/index.ts";
@@ -9,6 +10,13 @@ import { hashPassword, verifyPassword } from "./src/utils/encrypt.ts";
 import { signJwt, verifyJwt } from "./src/utils/jwt.ts";
 
 const app = new Hono();
+
+app.use("*", cors({
+    origin: ["http://127.0.0.1:5173", "https://dash.xingjisoft.com"],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+}));
 
 app.get("/ping", (c) => {
     return response(c, true);
