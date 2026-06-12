@@ -1,13 +1,20 @@
 {
-    "version": "7",
-    "dialect": "sqlite",
-    "entries": [
-        {
-            "idx": 0,
-            "version": "6",
-            "when": 1781254610099,
-            "tag": "0000_nasty_dagger",
-            "breakpoints": true
-        }
-    ]
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1781254610099,
+      "tag": "0000_nasty_dagger",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1781260566472,
+      "tag": "0001_futuristic_arclight",
+      "breakpoints": true
+    }
+  ]
 }

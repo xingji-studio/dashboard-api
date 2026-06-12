@@ -24,19 +24,19 @@ app.get("/ping", (c) => {
 
 app.post("/register", async (c) => {
     const body = await c.req.json<
-        { name: string; email: string; password: string }
+        { username: string; email: string; password: string }
     >();
 
-    if (!body.name || !body.email || !body.password) {
+    if (!body.username || !body.email || !body.password) {
         return response(c, false, null, "Missing required fields", 400);
     }
 
     const existing = await db.query.users.findFirst({
-        where: or(eq(users.name, body.name), eq(users.email, body.email)),
+        where: or(eq(users.username, body.username), eq(users.email, body.email)),
     });
 
     if (existing) {
-        if (existing.name === body.name) {
+        if (existing.username === body.username) {
             return response(c, false, null, "Username already taken", 409);
         }
         if (existing.email === body.email) {
@@ -47,7 +47,7 @@ app.post("/register", async (c) => {
     const hashed = await hashPassword(body.password);
 
     await db.insert(users).values({
-        name: body.name,
+        username: body.username,
         email: body.email,
         password: hashed,
     });
@@ -75,12 +75,12 @@ app.post("/login", async (c) => {
 
     const token = await signJwt({
         sub: user.id,
-        name: user.name,
+        username: user.username,
         email: user.email,
     });
     return response(c, true, {
         id: user.id,
-        name: user.name,
+        username: user.username,
         email: user.email,
         token,
     }, "Login successful");
@@ -102,7 +102,7 @@ app.get("/profile", async (c) => {
         }
         return response(c, true, {
             id: user.id,
-            name: user.name,
+            username: user.username,
             email: user.email,
         });
     } catch {
