@@ -6,7 +6,7 @@
         "hono": "jsr:@hono/hono@^4.12.23"
     },
     "tasks": {
-        "start": "deno run --allow-net main.ts",
+        "start": "deno run -A main.ts",
         "db:gen": "deno -A drizzle-kit generate",
         "db:mig": "deno -A drizzle-kit migrate",
         "db:psh": "deno -A drizzle-kit push"
