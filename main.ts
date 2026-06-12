@@ -87,7 +87,7 @@ app.get("/profile", async (c) => {
     try {
         const payload = await verifyJwt(auth.slice(7));
         const user = await db.query.users.findFirst({
-            where: eq(users.id, payload.sub),
+            where: eq(users.id, Number(payload.sub)),
         });
         if (!user) {
             return response(c, false, null, "User not found", 404);

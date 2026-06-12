@@ -7,7 +7,7 @@ function getSecret(): Uint8Array {
 }
 
 export interface JwtPayload extends JWTPayload {
-    sub: number;
+    sub: string;
     name: string;
     email: string;
 }
@@ -24,5 +24,5 @@ export async function signJwt(
 
 export async function verifyJwt(token: string): Promise<JwtPayload> {
     const { payload } = await jwtVerify(token, getSecret());
-    return payload as JwtPayload;
+    return payload as unknown as JwtPayload;
 }
