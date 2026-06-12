@@ -3,7 +3,7 @@ import { eq, or } from "drizzle-orm";
 import response from "./src/utils/response.ts";
 import { db } from "./src/db/index.ts";
 import { users } from "./src/db/schema.ts";
-import { hashPassword } from "./src/utils/encrypt.ts";
+import { hashPassword, verifyPassword } from "./src/utils/encrypt.ts";
 
 const app = new Hono();
 
@@ -36,6 +36,27 @@ app.post("/register", async (c) => {
     });
 
     return response(c, true, null, "Registered successfully", 201);
+});
+
+app.post("/login", async (c) => {
+    const body = await c.req.json<{ email: string; password: string }>();
+    if (!body.email || !body.password) {
+        return response(c, false, null, "Missing required fields", 400);
+    }
+
+    const user = await db.query.users.findFirst({
+        where: eq(users.email, body.email),
+    });
+    if (!user) {
+        return response(c, false, null, "Invalid email or password", 401);
+    }
+
+    const valid = await verifyPassword(body.password, user.password);
+    if (!valid) {
+        return response(c, false, null, "Invalid email or password", 401);
+    }
+
+    return response(c, true, { id: user.id, name: user.name, email: user.email }, "Login successful");
 });
 
 function handleExit() {
