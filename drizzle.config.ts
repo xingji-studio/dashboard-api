@@ -1,6 +1,4 @@
 import { defineConfig } from "drizzle-kit";
-import { load } from "dotenv";
-await load({ export: true });
 
 export default defineConfig({
     out: "./drizzle",

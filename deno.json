@@ -8,10 +8,10 @@
         "dotenv": "jsr:@std/dotenv@^0.225.7"
     },
     "tasks": {
-        "start": "deno run -A main.ts",
-        "db:gen": "deno -A drizzle-kit generate",
-        "db:mig": "deno -A drizzle-kit migrate",
-        "db:psh": "deno -A drizzle-kit push"
+        "start": "deno run -A --env main.ts",
+        "db:gen": "deno -A --env drizzle-kit generate",
+        "db:mig": "deno -A --env drizzle-kit migrate",
+        "db:psh": "deno -A --env drizzle-kit push"
     },
     "compilerOptions": {
         "jsx": "precompile",
