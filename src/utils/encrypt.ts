@@ -25,9 +25,14 @@ export async function hashPassword(password: string): Promise<string> {
     return `${bufToHex(salt)}:${bufToHex(derived)}`;
 }
 
-export async function verifyPassword(password: string, stored: string): Promise<boolean> {
+export async function verifyPassword(
+    password: string,
+    stored: string,
+): Promise<boolean> {
     const [saltHex, hashHex] = stored.split(":");
-    const salt = new Uint8Array(saltHex.match(/.{2}/g)!.map((h) => parseInt(h, 16)));
+    const salt = new Uint8Array(
+        saltHex.match(/.{2}/g)!.map((h) => parseInt(h, 16)),
+    );
     const enc = new TextEncoder();
     const key = await crypto.subtle.importKey(
         "raw",

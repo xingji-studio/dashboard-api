@@ -2,13 +2,18 @@
   "version": "5",
   "specifiers": {
     "jsr:@hono/hono@^4.12.23": "4.12.23",
+    "jsr:@std/dotenv@~0.225.7": "0.225.7",
     "npm:@libsql/client@~0.17.3": "0.17.3",
     "npm:drizzle-kit@~0.31.10": "0.31.10",
-    "npm:drizzle-orm@~0.45.2": "0.45.2_@libsql+client@0.17.3"
+    "npm:drizzle-orm@~0.45.2": "0.45.2_@libsql+client@0.17.3",
+    "npm:jose@^5.10.0": "5.10.0"
   },
   "jsr": {
     "@hono/hono@4.12.23": {
       "integrity": "9d9f3da498f69c311b5f92d973eb3b8ebc973b5fd2b4972781b556e07818a745"
+    },
+    "@std/dotenv@0.225.7": {
+      "integrity": "11d8db03ca4ad5aba9eba809f2e8058b2a4f320b7b09fea4b360e162928329e3"
     }
   },
   "npm": {
@@ -724,6 +729,10 @@
       ],
       "tarball": "https://registry.npmmirror.com/get-tsconfig/-/get-tsconfig-4.14.0.tgz"
     },
+    "jose@5.10.0": {
+      "integrity": "sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==",
+      "tarball": "https://registry.npmmirror.com/jose/-/jose-5.10.0.tgz"
+    },
     "js-base64@3.7.8": {
       "integrity": "sha512-hNngCeKxIUQiEUN3GPJOkz4wF/YvdUdbNL9hsBcMQTkKzboD7T/q3OYOuuPZLUE6dBxSGpwhk5mwuDud7JVAow==",
       "tarball": "https://registry.npmmirror.com/js-base64/-/js-base64-3.7.8.tgz"
@@ -792,9 +801,11 @@
   "workspace": {
     "dependencies": [
       "jsr:@hono/hono@^4.12.23",
+      "jsr:@std/dotenv@~0.225.7",
       "npm:@libsql/client@~0.17.3",
       "npm:drizzle-kit@~0.31.10",
-      "npm:drizzle-orm@~0.45.2"
+      "npm:drizzle-orm@~0.45.2",
+      "npm:jose@^5.10.0"
     ]
   }
 }

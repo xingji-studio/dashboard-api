@@ -1,9 +1,12 @@
+import { load } from "dotenv";
+await load({ export: true });
 import { Hono } from "hono";
 import { eq, or } from "drizzle-orm";
 import response from "./src/utils/response.ts";
 import { db } from "./src/db/index.ts";
 import { users } from "./src/db/schema.ts";
 import { hashPassword, verifyPassword } from "./src/utils/encrypt.ts";
+import { signJwt, verifyJwt } from "./src/utils/jwt.ts";
 
 const app = new Hono();
 
@@ -12,7 +15,9 @@ app.get("/ping", (c) => {
 });
 
 app.post("/register", async (c) => {
-    const body = await c.req.json<{ name: string; email: string; password: string }>();
+    const body = await c.req.json<
+        { name: string; email: string; password: string }
+    >();
 
     if (!body.name || !body.email || !body.password) {
         return response(c, false, null, "Missing required fields", 400);
@@ -23,8 +28,12 @@ app.post("/register", async (c) => {
     });
 
     if (existing) {
-        if (existing.name === body.name) return response(c, false, null, "Username already taken", 409);
-        if (existing.email === body.email) return response(c, false, null, "Email already registered", 409);
+        if (existing.name === body.name) {
+            return response(c, false, null, "Username already taken", 409);
+        }
+        if (existing.email === body.email) {
+            return response(c, false, null, "Email already registered", 409);
+        }
     }
 
     const hashed = await hashPassword(body.password);
@@ -56,7 +65,41 @@ app.post("/login", async (c) => {
         return response(c, false, null, "Invalid email or password", 401);
     }
 
-    return response(c, true, { id: user.id, name: user.name, email: user.email }, "Login successful");
+    const token = await signJwt({
+        sub: user.id,
+        name: user.name,
+        email: user.email,
+    });
+    return response(c, true, {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        token,
+    }, "Login successful");
+});
+
+app.get("/profile", async (c) => {
+    const auth = c.req.header("Authorization");
+    if (!auth?.startsWith("Bearer ")) {
+        return response(c, false, null, "Missing or invalid token", 401);
+    }
+
+    try {
+        const payload = await verifyJwt(auth.slice(7));
+        const user = await db.query.users.findFirst({
+            where: eq(users.id, payload.sub),
+        });
+        if (!user) {
+            return response(c, false, null, "User not found", 404);
+        }
+        return response(c, true, {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        });
+    } catch {
+        return response(c, false, null, "Invalid token", 401);
+    }
 });
 
 function handleExit() {

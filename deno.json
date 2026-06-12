@@ -3,7 +3,9 @@
         "@libsql/client": "npm:@libsql/client@^0.17.3",
         "drizzle-kit": "npm:drizzle-kit@^0.31.10",
         "drizzle-orm": "npm:drizzle-orm@^0.45.2",
-        "hono": "jsr:@hono/hono@^4.12.23"
+        "hono": "jsr:@hono/hono@^4.12.23",
+        "jose": "npm:jose@^5.10.0",
+        "dotenv": "jsr:@std/dotenv@^0.225.7"
     },
     "tasks": {
         "start": "deno run -A main.ts",
