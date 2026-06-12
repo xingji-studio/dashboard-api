@@ -1,0 +1,21 @@
+{
+    "imports": {
+        "@libsql/client": "npm:@libsql/client@^0.17.3",
+        "drizzle-kit": "npm:drizzle-kit@^0.31.10",
+        "drizzle-orm": "npm:drizzle-orm@^0.45.2",
+        "hono": "jsr:@hono/hono@^4.12.23"
+    },
+    "tasks": {
+        "start": "deno run --allow-net main.ts",
+        "db:gen": "deno -A drizzle-kit generate",
+        "db:mig": "deno -A drizzle-kit migrate",
+        "db:psh": "deno -A drizzle-kit push"
+    },
+    "compilerOptions": {
+        "jsx": "precompile",
+        "jsxImportSource": "hono/jsx"
+    },
+    "fmt": {
+        "indentWidth": 4
+    }
+}
